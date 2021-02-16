@@ -8,7 +8,7 @@ DIRS="build/ref"
 export CFLAGS="-fsanitize=address,undefined ${CFLAGS}"
 
 for dir in $DIRS; do
-  for alg in 512 512-90s; do
+  for alg in 512_ref 512-90s_ref; do
     #valgrind --vex-guest-max-insns=25 ./$dir/test_kyber$alg
     ./$dir/test_kyber$alg &
     PID1=$!
