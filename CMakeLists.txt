@@ -7,8 +7,4 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 
 enable_testing()
 
-#find_package(OpenSSL REQUIRED)
-#include_directories(${OPENSSL_INCLUDE_DIR})
-
 add_subdirectory(ref)
-#add_subdirectory(avx2)
