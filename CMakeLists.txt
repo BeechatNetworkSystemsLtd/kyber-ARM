@@ -1,4 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
+SET(CMAKE_SYSTEM_NAME Linux)
+
+# Set ARM compiler
+SET(CMAKE_FIND_ROOT_PATH ${TOOLS_PATH})
 
 project(kyber C ASM)
 
