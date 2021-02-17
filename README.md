@@ -1,10 +1,10 @@
 # Kyber-ARM
 
-This repository contains the reference implementation of the [Kyber](https://www.pq-crystals.org/kyber/) key encapsulation mechanism, Post Quantum Cryptography algorithms for ARM64 arch.
+This repository contains the reference implementation of the [Kyber](https://www.pq-crystals.org/kyber/) key encapsulation mechanism, Post Quantum Cryptography algorithms for the ARM64 architecture.
 
 ## Build
 
-For project build you should use a bash script `build.sh` witch use cmake:
+To build the project you should use a bash script `build.sh` for which you should use cmake:
 ```sh
 ./build.sh
 ```
@@ -12,7 +12,7 @@ The build result will be available in the `/build/ref` directory.
 
 ## Usage
 
-To use the Kyber functions in a your project, you must use the static libs are located in the `/build/ref` directory.
+To use the Kyber functions in your project, you must use the static libs that are located in the `/build/ref` directory.
 For example:
 
 ```c
@@ -38,7 +38,7 @@ $CC -DKYBER_K=2 -c your_app.c
 $CC -o binary your_app.o -L. -lkyber512_ref.a
 ```
 
-Cross-compile located in toolchain directory of this repository.
+Cross-compile is located in toolchain directory of this repository.
 
 ## Testing
 
