@@ -5,8 +5,13 @@ This repository contains the reference implementation of the [Kyber](https://www
 ## Build
 
 To build the project you should use a bash script `build.sh` for which you should use cmake:
+Optionaly, you can set bitness of application by "-b=" option. Default is x32
 ```sh
-./build.sh
+./build.sh -b=64
+```
+or,
+```sh
+./build.sh -b=32
 ```
 The build result will be available in the `/build/ref` directory.
 
