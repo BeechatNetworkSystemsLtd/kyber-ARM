@@ -47,6 +47,12 @@ Cross-compile is located in toolchain directory of this repository.
 
 ## Testing
 
+1. Copy ./build/speed_test.tar.gz on Raspberry PI
+2. Untar on board `tar xzvf speed_test.tar.gz`
+3. `cd speed_test`
+4. `sudo ./install_module.sh`
+5. `sudo ./test.sh`
+
 For tests you can use `./runtests.sh` script. Don't forget that the tests must be run either in the emulator or on the target platform.
 
 

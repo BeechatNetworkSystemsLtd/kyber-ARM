@@ -35,12 +35,63 @@ add_executable(test_vectors512_ref ${TEST_VECTORS_SRCS})
 add_executable(test_kyber512-90s_ref ${TEST_KYBER_SRCS})
 add_executable(test_kex512-90s_ref ${TEST_KEX_SRCS})
 add_executable(test_vectors512-90s_ref ${TEST_VECTORS_SRCS})
+add_executable(test_speed ${TEST_SPEED_SRCS})
+
+option(VERSION32 "Aarch32 build" OFF)
+option(VERSION64 "Aarch32 build" OFF)
+IF (VERSION32)
+  message("Aarch32 build")
+  target_compile_definitions(test_speed PUBLIC VERSION32)
+ENDIF()
+IF (VERSION64)
+  message("Aarch64 build")
+  target_compile_definitions(test_speed PUBLIC VERSION64)
+ENDIF()
+
+target_compile_options(test_speed PUBLIC -static)
+
 target_link_libraries(test_kyber512_ref kyber512_ref)
 target_link_libraries(test_kex512_ref kyber512_ref)
 target_link_libraries(test_vectors512_ref kyber512_ref)
 target_link_libraries(test_kyber512-90s_ref kyber512_90s_ref)
 target_link_libraries(test_kex512-90s_ref kyber512_90s_ref)
 target_link_libraries(test_vectors512-90s_ref kyber512_90s_ref)
+target_link_libraries(test_speed kyber512_ref)
+
+add_custom_command(
+  TARGET test_speed POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/ref/speed_test
+)
+add_custom_command(
+  TARGET test_speed POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/ref/speed_test ${CMAKE_BINARY_DIR}/ref/speed_test
+  COMMENT "Making Release: speed_test.tar.gz"
+)
+IF (VERSION32)
+  add_custom_command(
+    TARGET test_speed POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_BINARY_DIR}/ref/speed_test/clock_module/clock_enabler64.c
+  )
+ENDIF()
+IF (VERSION64)
+  add_custom_command(
+    TARGET test_speed POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_BINARY_DIR}/ref/speed_test/clock_module/clock_enabler.c
+  )
+  add_custom_command(
+    TARGET test_speed POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E rename ${CMAKE_BINARY_DIR}/ref/speed_test/clock_module/clock_enabler64.c ${CMAKE_BINARY_DIR}/ref/speed_test/clock_module/clock_enabler.c
+  )
+ENDIF()
+
+add_custom_command(
+  TARGET test_speed POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/ref/test_speed ${CMAKE_BINARY_DIR}/ref/speed_test
+)
+add_custom_target(create_tar ALL COMMAND
+  ${CMAKE_COMMAND} -E tar "czvf" ${CMAKE_BINARY_DIR}/speed_test.tar.gz speed_test
+  COMMENT "Done: speed_test.tar.gz"
+)
 
 add_test(NAME kyber512_ref COMMAND test_kyber512_ref)
 add_test(NAME kex512_ref COMMAND test_kex512_ref)
